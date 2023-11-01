@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Savi.Data.Domains;
 using Savi.Data.Enums;
-using System.Reflection.Emit;
 
 namespace Savi.Data.Context
 {
@@ -98,9 +97,8 @@ namespace Savi.Data.Context
 				.HasForeignKey(cd => cd.UserId)
 			.OnDelete(DeleteBehavior.Cascade);
 
-            
-            // OTP (User to OTP: 1 to 1)
-            builder.Entity<OTP>()
+			// OTP (User to OTP: 1 to 1)
+			builder.Entity<OTP>()
 				.HasOne(o => o.User)
 				.WithOne(u => u.OTP)
 				.HasForeignKey<OTP>(o => o.UserId)

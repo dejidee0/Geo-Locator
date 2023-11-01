@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Savi.Api.Extensions;
@@ -70,8 +69,8 @@ public class Program
         builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         builder.Services.AddScoped<IDocumentUploadService, DocumentUploadService>();
         builder.Services.AddCloudinaryExtension(builder.Configuration);
-       // builder.Services.AddDbContext<SaviDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("SaviDbContext")));
-       builder.Services.AddDbContextAndConfigurations(builder.Environment, builder.Configuration);
+        //builder.Services.AddDbContext<SaviDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("SaviContext")));
+        builder.Services.AddDbContextAndConfigurations(builder.Environment, builder.Configuration);
         AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
         builder.Services.AddTransient<IUserRepository, UserRepository>();
         //builder.Services.AddDbContext<SaviDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("SaviContext"),
@@ -176,7 +175,7 @@ public class Program
         {
             options.AddDefaultPolicy(builder =>
             {
-                builder.WithOrigins("http://localhost:3000")
+                builder.WithOrigins("http://localhost:3003")
                        .AllowAnyHeader()
                        .AllowAnyMethod();
             });
@@ -204,7 +203,11 @@ public class Program
         }
 
         app.UseHttpsRedirection();
-        app.UseCors();
+        app.UseCors(x => x.AllowAnyHeader()
+.AllowAnyMethod()
+.WithOrigins("https://savi-savings.web.app"));
+
+
 
         app.UseHangfireDashboard();
         RecurringJob.AddOrUpdate<IGroupWalletFundingServices>(
