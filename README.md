@@ -1,4 +1,7 @@
 
+![image](https://github.com/dejidee0/ProjectSavi/assets/107705210/97aac5c3-1bc6-4e3d-b694-154ee6c2cec2)
+
+
 # Project (Savi)
 
 Savi App (Finance Management and success)
